@@ -29,7 +29,14 @@ export default async ({ req, res, log, error }) => {
     };
   }
 
-  const databases = new Databases(client);
+  const dbClient = new Client()
+    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+    .setKey(
+      req.headers['x-appwrite-key'] ??
+        'standard_d8582ff37d402854e22b78a74d0da37ea338cab3ff5aa552abf26ab5cf5c727903f64db77e7d1043a2ffdae617ebeb78cbacea3b28c54c4b62d110c123c07fa9a84f58b6bd1fca68b6745930e392b2080bf33d70f6551b4df1f1e1b9d153057386f25d1df6d6419e6c967f8782974a4b600241440c73d85268d2b14b7db01cd3'
+    );
+  const databases = new Databases(dbClient);
 
   var respProducts = {};
 
