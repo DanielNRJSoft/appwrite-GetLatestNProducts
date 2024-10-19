@@ -34,7 +34,7 @@ export default async ({ req, res, log, error }) => {
   // collection list.
   var respCollection = {};
   try {
-    const collectionsResponse = await db.listCollections();
+    const collectionsResponse = await db.listCollections('shopApp');
     // Log messages and errors to the Appwrite Console
     // These logs won't be seen by your end users
     log(`Total users: ${collectionsResponse.total}`);
