@@ -1,4 +1,4 @@
-import { Client, Users } from 'node-appwrite';
+import { Client, Users, Databases } from 'node-appwrite';
 
 // This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {
@@ -11,17 +11,41 @@ export default async ({ req, res, log, error }) => {
 
   const users = new Users(client);
 
+  var respUsers = {};
   try {
-    const response = await users.list();
+    const userResponse = await users.list();
     // Log messages and errors to the Appwrite Console
     // These logs won't be seen by your end users
-    log(`Total users: ${response.total}`);
-    return res.json({
+    log(`Total users: ${userResponse.total}`);
+    respUsers = {
       cmd: 'USER LIST',
-      data: response,
-    });
+      data: userResponse,
+    };
   } catch (err) {
     error('Could not list users: ' + err.message);
+    respUsers = {
+      cmd: 'USER LIST',
+      error: err,
+    };
+  }
+
+  const databases = new Databases(client);
+
+  var respProducts = {};
+
+  try {
+    const productsResponse = await databases.getCollection(
+      'shopApp', // databaseId
+      'products' // collectionId
+    );
+    log(`Total products: ${productsResponse.total}`);
+    respProducts = { cmd: 'PRODUCT LIST', data: productsResponse };
+  } catch (err) {
+    error('Could not list products: ' + err.message);
+    respProducts = {
+      cmd: 'PRODUCT LIST',
+      error: err,
+    };
   }
 
   // The req object contains the request data
@@ -31,10 +55,16 @@ export default async ({ req, res, log, error }) => {
     return res.text('Pong');
   }
 
-  return res.json({
+  const defaultResponse = {
     motto: 'Build like a team of hundreds_',
     learn: 'https://appwrite.io/docs',
     connect: 'https://appwrite.io/discord',
     getInspired: 'https://builtwith.appwrite.io',
+  };
+
+  return res.json({
+    default: defaultResponse,
+    users: respUsers,
+    products: respProducts,
   });
 };
