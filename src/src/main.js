@@ -29,6 +29,27 @@ export default async ({ req, res, log, error }) => {
     };
   }
 
+  const db = new Databases(client);
+
+  // collection list.
+  var respCollection = {};
+  try {
+    const collectionsResponse = await db.listCollections();
+    // Log messages and errors to the Appwrite Console
+    // These logs won't be seen by your end users
+    log(`Total users: ${collectionsResponse.total}`);
+    respCollection = {
+      cmd: 'COLLECTIONS LIST',
+      data: collectionsResponse,
+    };
+  } catch (err) {
+    error('Could not list collections: ' + err.message);
+    respCollection = {
+      cmd: 'COLLECTIONS LIST',
+      error: err,
+    };
+  }
+
   const dbClient = new Client()
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
@@ -72,6 +93,7 @@ export default async ({ req, res, log, error }) => {
   return res.json({
     default: defaultResponse,
     users: respUsers,
+    collections: respCollection,
     products: respProducts,
   });
 };
