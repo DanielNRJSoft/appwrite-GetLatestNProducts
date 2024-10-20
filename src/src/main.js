@@ -51,8 +51,8 @@ async function getUsers({ req, log, error }) {
 async function getCollection({ req, log, error }) {
   const client = new Client()
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key'] ?? API_KEY_ALL_RIGHTS);
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID);
+  // .setKey(req.headers['x-appwrite-key'] ?? API_KEY_ALL_RIGHTS);
 
   const db = new Databases(client);
 
@@ -80,8 +80,8 @@ async function getCollection({ req, log, error }) {
 async function getProducts({ req, log, error }) {
   const client = new Client()
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key'] ?? API_KEY_ALL_RIGHTS);
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID);
+  // .setKey(req.headers['x-appwrite-key'] ?? API_KEY_ALL_RIGHTS);
 
   const databases = new Databases(client);
 
