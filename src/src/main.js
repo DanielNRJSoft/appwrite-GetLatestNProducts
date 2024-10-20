@@ -61,9 +61,7 @@ async function getCollection({ req, res, log, error }) {
 
   try {
     const collectionsResponse = await db.listCollections(DB_ID);
-    // Log messages and errors to the Appwrite Console
-    // These logs won't be seen by your end users
-    log(`Total users: ${collectionsResponse.total}`);
+    log(`Total collections: ${collectionsResponse.total}`);
     collections = {
       cmd: 'COLLECTIONS LIST',
       data: collectionsResponse,
@@ -90,12 +88,12 @@ async function getProducts({ req, res, log, error }) {
   var respProducts = {};
 
   try {
-    const productsResponse = await databases.getCollection(
+    const productsResponse = await databases.listDocuments(
       DB_ID, // databaseId
       PRODUCTS_COLLECTION_ID // collectionId
     );
 
-    log(`Total products: ${productsResponse}`);
+    log(`Total products: ${productsResponse.total}`);
     respProducts = { cmd: 'PRODUCT LIST', data: productsResponse };
   } catch (err) {
     error('Could not list products: ' + err.message);
@@ -104,6 +102,8 @@ async function getProducts({ req, res, log, error }) {
       error: err,
     };
   }
+
+  return respProducts;
 }
 
 // This Appwrite function will be executed every time your function is triggered
