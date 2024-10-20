@@ -83,15 +83,22 @@ export default async ({ req, res, log, error }) => {
     return res.text('Pong');
   }
 
-  const defaultResponse = {
-    motto: 'Build like a team of hundreds_',
-    learn: 'https://appwrite.io/docs',
-    connect: 'https://appwrite.io/discord',
-    getInspired: 'https://builtwith.appwrite.io',
-  };
+  if (req.path === '/default') {
+    const defaultResponse = {
+      motto: 'Build like a team of hundreds_',
+      learn: 'https://appwrite.io/docs',
+      connect: 'https://appwrite.io/discord',
+      getInspired: 'https://builtwith.appwrite.io',
+    };
+
+    return res.json(defaultResponse);
+  }
+
+  if (req.path === '/env') {
+    return res.json({ env: process.env });
+  }
 
   return res.json({
-    default: defaultResponse,
     users: respUsers,
     collections: respCollection,
     products: respProducts,
