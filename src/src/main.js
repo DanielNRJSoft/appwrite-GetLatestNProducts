@@ -55,12 +55,13 @@ async function getCollection({ req, log, error }) {
   const key = API_KEY_COLLECTIONS_READ_WRITE;
   log(`key: ${key}`);
 
-  const client = new Client()
+  const client = new Client();
+  const db = new Databases(client);
+
+  client
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
     .setKey(key);
-
-  const db = new Databases(client);
 
   // collection list.
   var collections = {};
