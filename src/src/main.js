@@ -113,6 +113,34 @@ async function getProducts({ req, log, error }) {
   return respProducts;
 }
 
+async function getMessages({ req, log, error }) {
+  const client = new Client()
+    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID);
+
+  const databases = new Databases(client);
+
+  var response = {};
+
+  try {
+    const productsResponse = await databases.listDocuments(
+      DB_ID, // databaseId
+      MESSAGES_COLLECTION_ID // collectionId
+    );
+
+    log(`Total messages: ${productsResponse.total}`);
+    response = { cmd: 'IMAGES LIST', data: productsResponse.documents };
+  } catch (err) {
+    error('Could not list images: ' + err.message);
+    response = {
+      cmd: 'IMAGES LIST',
+      error: err,
+    };
+  }
+
+  return response;
+}
+
 // This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {
   // The req object contains the request data
@@ -144,6 +172,12 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
+  if (req.path === '/images') {
+    const messages = await getMessages({ req, log, error });
+    return res.json({
+      messages,
+    });
+  }
   const products = await getProducts({ req, log, error });
   return res.json({
     products: products,
