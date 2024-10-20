@@ -1,5 +1,15 @@
 import { Client, Users, Databases } from 'node-appwrite';
 
+const DB_ID = 'shopApp';
+
+const USER_COLLECTION_ID = '66fe5102000cea9b12c0';
+const PRODUCTS_COLLECTION_ID = 'products';
+const PRODUCT_IMAGES_COLLECTION_ID = 'images';
+const MESSAGES_COLLECTION_ID = 'messages';
+
+const API_KEY_ALL_RIGHTS =
+  'standard_d8582ff37d402854e22b78a74d0da37ea338cab3ff5aa552abf26ab5cf5c727903f64db77e7d1043a2ffdae617ebeb78cbacea3b28c54c4b62d110c123c07fa9a84f58b6bd1fca68b6745930e392b2080bf33d70f6551b4df1f1e1b9d153057386f25d1df6d6419e6c967f8782974a4b600241440c73d85268d2b14b7db01cd3';
+
 // This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {
   // You can use the Appwrite SDK to interact with other services
@@ -34,7 +44,7 @@ export default async ({ req, res, log, error }) => {
   // collection list.
   var respCollection = {};
   try {
-    const collectionsResponse = await db.listCollections('shopApp');
+    const collectionsResponse = await db.listCollections(DB_ID);
     // Log messages and errors to the Appwrite Console
     // These logs won't be seen by your end users
     log(`Total users: ${collectionsResponse.total}`);
@@ -53,18 +63,15 @@ export default async ({ req, res, log, error }) => {
   const dbClient = new Client()
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(
-      req.headers['x-appwrite-key'] ??
-        'standard_d8582ff37d402854e22b78a74d0da37ea338cab3ff5aa552abf26ab5cf5c727903f64db77e7d1043a2ffdae617ebeb78cbacea3b28c54c4b62d110c123c07fa9a84f58b6bd1fca68b6745930e392b2080bf33d70f6551b4df1f1e1b9d153057386f25d1df6d6419e6c967f8782974a4b600241440c73d85268d2b14b7db01cd3'
-    );
+    .setKey(API_KEY_ALL_RIGHTS);
   const databases = new Databases(dbClient);
 
   var respProducts = {};
 
   try {
     const productsResponse = await databases.getCollection(
-      'shopApp', // databaseId
-      'products' // collectionId
+      DB_ID, // databaseId
+      PRODUCTS_COLLECTION_ID // collectionId
     );
     log(`Total products: ${productsResponse.total}`);
     respProducts = { cmd: 'PRODUCT LIST', data: productsResponse };
