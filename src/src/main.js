@@ -52,7 +52,7 @@ async function getUsers({ req, log, error }) {
 }
 
 async function getCollection({ req, log, error }) {
-  const key = req.headers['x-appwrite-key'] ?? API_KEY_COLLECTIONS_READ_WRITE;
+  const key = API_KEY_COLLECTIONS_READ_WRITE;
   log(`key: ${key}`);
 
   const client = new Client()
