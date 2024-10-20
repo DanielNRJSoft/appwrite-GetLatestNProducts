@@ -49,10 +49,13 @@ async function getUsers({ req, log, error }) {
 }
 
 async function getCollection({ req, log, error }) {
+  const key = req.headers['x-appwrite-key'] ?? API_KEY_ALL_RIGHTS;
+  log(`key: ${key}`);
+
   const client = new Client()
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID);
-  // .setKey(req.headers['x-appwrite-key'] ?? API_KEY_ALL_RIGHTS);
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+    .setKey(key);
 
   const db = new Databases(client);
 
