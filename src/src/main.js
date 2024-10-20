@@ -17,7 +17,7 @@ const DEFAULT_RESPONSE = {
   getInspired: 'https://builtwith.appwrite.io',
 };
 
-async function getUsers({ req, res, log, error }) {
+async function getUsers({ req, log, error }) {
   // You can use the Appwrite SDK to interact with other services
   // For this example, we're using the Users service
   const client = new Client()
@@ -48,11 +48,11 @@ async function getUsers({ req, res, log, error }) {
   return respUsers;
 }
 
-async function getCollection({ req, res, log, error }) {
+async function getCollection({ req, log, error }) {
   const client = new Client()
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(API_KEY_ALL_RIGHTS);
+    .setKey(req.headers['x-appwrite-key'] ?? API_KEY_ALL_RIGHTS);
 
   const db = new Databases(client);
 
@@ -77,11 +77,11 @@ async function getCollection({ req, res, log, error }) {
   return collections;
 }
 
-async function getProducts({ req, res, log, error }) {
+async function getProducts({ req, log, error }) {
   const client = new Client()
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(API_KEY_ALL_RIGHTS);
+    .setKey(req.headers['x-appwrite-key'] ?? API_KEY_ALL_RIGHTS);
 
   const databases = new Databases(client);
 
@@ -124,20 +124,20 @@ export default async ({ req, res, log, error }) => {
   }
 
   if (req.path === '/users') {
-    const users = await getUsers({ req, res, log, err });
+    const users = await getUsers({ req, log, error });
     return res.json({
       users: users,
     });
   }
 
   if (req.path === '/collections') {
-    const collections = await getCollection({ req, res, log, err });
+    const collections = await getCollection({ req, log, error });
     return res.json({
       collections: collections,
     });
   }
 
-  const products = await getProducts({ req, res, log, err });
+  const products = await getProducts({ req, log, error });
   return res.json({
     products: products,
   });
