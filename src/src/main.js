@@ -1,9 +1,9 @@
-import getUsers from "./users";
-import getCollection from "./collections";
-import { getMessages } from "./messages";
-import { getProducts, getProductsImages } from "./products";
+import getUsers from "./users.js";
+import getCollection from "./collections.js";
+import { getMessages } from "./messages.js";
+import { getProducts, getProductsImages } from "./products.js";
 
-import { DEFAULT_RESPONSE } from "./constants";
+import { DEFAULT_RESPONSE } from "./constants.js";
 
 // This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {

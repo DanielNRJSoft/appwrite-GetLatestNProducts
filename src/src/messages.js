@@ -1,7 +1,5 @@
 import { Client, Databases } from 'node-appwrite';
-import { DB_ID, MESSAGES_COLLECTION_ID } from './constants';
-
-
+import { DB_ID, MESSAGES_COLLECTION_ID } from './constants.js';
 
 export async function getMessages({ req, log, error }) {
   const client = new Client()

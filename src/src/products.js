@@ -1,5 +1,5 @@
 import { Client, Databases } from 'node-appwrite';
-import { DB_ID, PRODUCT_IMAGES_COLLECTION_ID, PRODUCTS_COLLECTION_ID } from './constants';
+import { DB_ID, PRODUCT_IMAGES_COLLECTION_ID, PRODUCTS_COLLECTION_ID } from './constants.js';
 
 
 export async function getProducts({ req, log, error }) {

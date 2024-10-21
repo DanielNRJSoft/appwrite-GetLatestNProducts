@@ -1,7 +1,5 @@
 import { Client, Databases } from 'node-appwrite';
-import { API_KEY_COLLECTIONS_READ_WRITE, DB_ID } from './constants';
-
-
+import { API_KEY_COLLECTIONS_READ_WRITE, DB_ID } from './constants.js';
 
 export default async function getCollection({ req, log, error }) {
   const key = API_KEY_COLLECTIONS_READ_WRITE;
