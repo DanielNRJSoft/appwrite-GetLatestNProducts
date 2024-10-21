@@ -1,7 +1,7 @@
 import getUsers from "./users.js";
 import getCollection from "./collections.js";
 import { getMessages } from "./messages.js";
-import { getProducts, getProductsImages } from "./products.js";
+import { getNProducts, getPageableProducts, getProducts, getProductsImages } from "./products.js";
 
 import { DEFAULT_RESPONSE } from "./constants.js";
 
@@ -43,17 +43,31 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
-  if (req.path === '/product-images') {
-    const productsImages = await getProductsImages({ req, log, error });
-    return res.json({
-      productsImages,
-    });
-  }
-
   if (req.path === '/products') {
     const products = await getProducts({ req, log, error });
     return res.json({
       products: products,
+    });
+  }
+
+  if (req.path === '/products/n') {
+    const products = await getNProducts({ req, log, error });
+    return res.json({
+      products: products,
+    });
+  }
+  
+  if (req.path === '/products/pageable') {
+    const products = await getPageableProducts({ req, log, error });
+    return res.json({
+      products: products,
+    });
+  }
+
+  if (req.path === '/product-images') {
+    const productsImages = await getProductsImages({ req, log, error });
+    return res.json({
+      productsImages,
     });
   }
 
